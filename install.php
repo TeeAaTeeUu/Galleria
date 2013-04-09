@@ -3,16 +3,31 @@
 include 'mysql.php';
 
 $images = array(
-    'name' => 15,
+    'name' => 50,
+);
+
+$infos = array(
+    'name' => 50,
+    'nimi' => 75,
+    'nick' => 50,
+    'kenen' => 50,
+);
+
+$comments = array(
+    'name' => 50,
+    'comment' => 512,
+    'nick' => 50,
 );
 
 $rates = array(
-    'name' => 15,
+    'name' => 50,
     'rate' => 1,
 );
 
 $tables = array(
     "images",
+    "comments",
+    "infos",
     "rates"
 );
 
