@@ -1,6 +1,6 @@
 <?php
 
-include 'mysql.php';
+include 'classes/mysql.php';
 
 $images = array(
     'name' => 50,

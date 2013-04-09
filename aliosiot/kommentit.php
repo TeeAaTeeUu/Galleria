@@ -1,5 +1,4 @@
 <?php
-        $db = new database();
         if (empty($pic) == false) {
             $comments = $db->get_comments_from_db($pic);
 

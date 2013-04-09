@@ -1,7 +1,7 @@
 <?php
 
 function __autoload($class_name) {
-    include $class_name . '.php';
+    include 'classes/' . $class_name . '.php';
 }
 
 ?>
@@ -117,7 +117,7 @@ function __autoload($class_name) {
 
                         echo '<img src="big_images/' . $pic . '" />';
 
-                        include_once 'kuvandata.php';
+                        include_once 'aliosiot/kuvandata.php';
                         ?>
 
                     </div>

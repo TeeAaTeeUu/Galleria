@@ -9,7 +9,7 @@ function __autoload($class_name) {
     include $class_name . '.php';
 }
 
-include_once 'database.php';
+include_once '../classes/database.php';
 
 $files = new files();
 $files->put_new_images_to_db();
