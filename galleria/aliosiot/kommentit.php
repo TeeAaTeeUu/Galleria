@@ -5,7 +5,7 @@
             foreach ($comments as $comment) {
                 echo '<div>
                     <p>' . $comment["comment"] . '</p>
-                        <p>' . $comment["nick"] . '</p>
+                        <p>- ' . $comment["nick"] . ' -</p>
                 </div>
                 <hr />';
             }
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="hidden" name="name" value="<?php echo $pic ?>" />
+                        <input type="hidden" name="image_id" value="<?php echo $pic ?>" />
                         <input type="submit" name="kommentointia" value="lähetä" />
                     </td>
                     <td>

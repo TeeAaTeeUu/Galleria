@@ -3,7 +3,6 @@
 function __autoload($class_name) {
     include 'classes/' . $class_name . '.php';
 }
-
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -98,24 +97,25 @@ function __autoload($class_name) {
 
                     $db = new database();
 
-                    $images = $db->get_images_names_from_db();
+                    $images = $db->get_images_names_from_db(12);
+                    
 
                     for ($index = 0; $index < count($images) / 2; $index++) {
-                        echo '<a ' . "\n" . 'href="?name=' . $images[$index] . '"><img src="small_images/' . $images[$index] . '" /></a>';
+                        echo '<div class="kuva"><a ' . "\n" . 'href="?image_id=' . $images[$index]["id"] . '"><img src="small_images/' . $images[$index]["name"] . '" /></a></div>';
                     }
                     ?>
                 </div>
                 <div id="content-2">
                     <div id="content-2-1">
                         <?php
-                        $pic;
-                        if (isset($_GET["name"])) {
-                            $pic = $_GET["name"];
+                        if (isset($_GET["image_id"])) {
+                            $kuva = $db->get_image_name_from_db($_GET["image_id"]);
                         } else {
-                            $pic = "apy.jpg";
+                            $kuva = "apy.jpg";
                         }
+                        $pic = $db->get_image_id_from_db($kuva);
 
-                        echo '<img src="big_images/' . $pic . '" />';
+                        echo '<img src="big_images/' . $kuva . '" />';
 
                         include_once 'aliosiot/kuvandata.php';
                         ?>
@@ -124,7 +124,7 @@ function __autoload($class_name) {
                     <div id="content-2-2">
                         <?php
                         for ($index = count($images) / 2; $index < count($images); $index++) {
-                            echo '<a href="?name=' . $images[$index] . '"><img src="small_images/' . $images[$index] . '" /></a>' . "\n";
+                        echo '<div class="kuva"><a ' . "\n" . 'href="?image_id=' . $images[$index]["id"] . '"><img src="small_images/' . $images[$index]["name"] . '" /></a></div>';
                         }
                         ?>
                     </div>

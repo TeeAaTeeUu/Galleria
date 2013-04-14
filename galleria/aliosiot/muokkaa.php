@@ -3,7 +3,7 @@
         <tr>
             <td>
                 <label for="nimi">Mikä merkki tämä on?</label><br />
-                <input name="nimi" type="text" />
+                <input name="nimi" type="text" value="<?php echo $info["nimi"] ?>" />
             </td>
             <td>
 
@@ -12,7 +12,7 @@
         <tr>
             <td>
                 <label for="kenen">Kenen merkki tämä on?</label><br />
-                <input name="kenen" type="text" />
+                <input name="kenen" type="text" value="<?php echo $info["kenen"] ?>" />
             </td>
             <td>
 
@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td>
-                <input type="hidden" name="name" value="<?php echo $pic ?>" />
+                <input type="hidden" name="image_id" value="<?php echo $pic ?>" />
                 <input type="submit" name="tietoa" value="lähetä" />
             </td>
             <td>

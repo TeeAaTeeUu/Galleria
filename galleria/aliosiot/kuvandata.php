@@ -2,6 +2,7 @@
 $post = array(
     "nimi",
     "name",
+    "image_id",
     "rate",
     "kenen",
     "kommentti",
@@ -36,6 +37,7 @@ if (empty($_POST) == false) {
         <li><a href="#tiedot">Tiedot</a></li>
         <li><a href="#muokkaa">Muokkaa tietoja</a></li>
         <li><a href="#kommentit">Kommentointi</a></li>
+        <li><a href="#tagit">tagit</a></li>
     </ul>
     <div id="tiedot">
         <?php
@@ -50,6 +52,12 @@ if (empty($_POST) == false) {
     <div id="kommentit">
         <?php
         include 'kommentit.php';
+        ?>
+    </div>
+    
+    <div id="tagit">
+        <?php
+        include 'tagit.php';
         ?>
     </div>
 </div>

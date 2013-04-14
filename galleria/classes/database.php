@@ -20,7 +20,7 @@ class database {
         $temp_array = array(
             "comment" => $comment_array["kommentti"],
             "nick" => $comment_array["nick"],
-            "name" => $comment_array["name"],
+            "image_id" => $comment_array["image_id"],
         );
         $this->mysql->put_query_from_array("comments", $temp_array);
     }
@@ -28,7 +28,7 @@ class database {
     public function put_rate_to_db($rate_array) {
         $temp_array = array(
             "rate" => $rate_array["rate"],
-            "name" => $rate_array["name"],
+            "image_id" => $rate_array["image_id"],
         );
         $this->mysql->put_query_from_array("rates", $temp_array);
     }
@@ -38,35 +38,41 @@ class database {
             "nimi" => $info_array["nimi"],
             "kenen" => $info_array["kenen"],
             "nick" => $info_array["nick"],
-            "name" => $info_array["name"],
+            "image_id" => $info_array["image_id"],
         );
         $this->mysql->put_query_from_array("infos", $temp_array);
     }
 
-    public function get_images_names_from_db() {
-        $db_content = $this->mysql->get_query_select("name", "images");
-        $temp = array();
-
-        foreach ($db_content as $file) {
-            $temp[] = $file["name"];
-        }
-        return $temp;
-    }
-
-    public function get_comments_from_db($name) {
-        return $this->mysql->get_query_select("comment, nick, name", "comments", "name", $name);
+    public function get_images_names_from_db($how_much) {
+        return $this->mysql->get_query_select("name, id", "images", null, null, "RAND()", false, null, $how_much);
     }
     
-    public function get_info_from_db($name) {
-        $temp = $this->mysql->get_query_select("nimi, nick, name, kenen", "infos", "name", $name);
-        if(empty($temp) == false)
-                return $temp[0];
-        return array("nimi" => "NA", "kenen" => "NA", "nick" => "NA", "name" => $name);
+    public function  get_image_name_from_db($image_id) {
+        $temp = $this->mysql->get_query_select("name", "images", "id", $image_id);
+        if(isset($temp[0]["name"]))
+            return $temp[0]["name"];
+        else return "apy.jpg";
+    }
+    
+   public function  get_image_id_from_db($name) {
+        return $this->mysql->get_query_select("id", "images", "name", $name)[0]["id"];
     }
 
-    public function get_rates_sum_from_db($name) {
+    public function get_comments_from_db($image_id) {
+        return $this->mysql->get_query_select("comment, nick", "comments", "image_id", $image_id);
+    }
+    
+    public function get_info_from_db($image_id) {
+        $temp = $this->mysql->get_query_select("nimi, nick, kenen", "infos", "image_id", $image_id, "aika DESC");
+        if(empty($temp) == false) {
+            return $temp[0];
+        }
+        return array("nimi" => "NA", "kenen" => "NA", "nick" => "NA");
+    }
+
+    public function get_rates_sum_from_db($image_id) {
         $sum = 0;
-        $temp = $this->mysql->get_query_select("rate", "rates", "name", $name);
+        $temp = $this->mysql->get_query_select("rate", "rates", "image_id", $image_id);
         foreach ($temp as $value) {
             $sum += $value["rate"];
         }

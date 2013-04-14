@@ -31,7 +31,7 @@ $rate = $db->get_rates_sum_from_db($pic);
         <option value="5" >5 tähteä</option>
     </select>
     <br />
-    <input type="hidden" name="name" value="<?php echo $pic ?>" />
+    <input type="hidden" name="image_id" value="<?php echo $pic ?>" />
     <input type="submit" name="pisteita" value="lähetä" />
 </form>
 </p>

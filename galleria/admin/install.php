@@ -1,26 +1,26 @@
 <?php
 
-include 'classes/mysql.php';
+include '../classes/mysql.php';
 
 $images = array(
     'name' => 50,
 );
 
 $infos = array(
-    'name' => 50,
+    'image_id' => 1,
     'nimi' => 75,
     'nick' => 50,
     'kenen' => 50,
 );
 
 $comments = array(
-    'name' => 50,
+    'image_id' => 1,
     'comment' => 512,
     'nick' => 50,
 );
 
 $rates = array(
-    'name' => 50,
+    'image_id' => 1,
     'rate' => 1,
 );
 
@@ -49,6 +49,7 @@ foreach ($tables as $value) {
         $query .= "$key VARCHAR($value)";
     }
 
+    $query = ", `aika` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,";
     $query .= " )";
 
     echo $query;

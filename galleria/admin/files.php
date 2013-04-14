@@ -6,7 +6,7 @@ ini_set('error_log', 'script_errors.log');
 ini_set('log_errors', 'On');
 
 function __autoload($class_name) {
-    include $class_name . '.php';
+    include "../classes/" . $class_name . '.php';
 }
 
 include_once '../classes/database.php';
@@ -23,8 +23,8 @@ class files {
     }
 
     public function directoryToArray() {
-        $directory = scandir(getcwd() . "/small_images/");
-        var_dump(getcwd() . "/small_images/");
+        $directory = scandir(dirname(getcwd()) .  "/small_images/");
+        var_dump(dirname(getcwd()) . "/small_images/");
         $temp_directory = array();
 
         foreach ($directory as $file) {
@@ -37,8 +37,6 @@ class files {
 
     public function put_new_images_to_db() {
         $old_images = $this->db->get_images_names_from_db();
-        var_dump($old_images);
-
         var_dump($old_images);
 
         $all_images = $this->directoryToArray();

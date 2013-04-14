@@ -10,12 +10,10 @@ class mysql {
     public $etuliite = "galleria_";
 
     public function __construct() {
-        $this->local_db = mysql_connect($this->dbhost, $this->dbuser, $this->dbpw)
-                or die(mysql_error());
-        mysql_select_db($this->dbname)
-                or die(mysql_error());
+        $this->local_db = mysql_connect($this->dbhost, $this->dbuser, $this->dbpw) or die(mysql_error());
+        mysql_select_db($this->dbname) or die(mysql_error());
     }
-    
+
     public function exists_in_db($from, $where, $is) {
         $data_array = $this->get_query_select('*', $from, $where, $is);
 
@@ -26,8 +24,8 @@ class mysql {
         else
             return false;
     }
-    
-    public function get_query_select($what, $from, $where = null, $is = null, $order_by = null, $where_array_is_and = true) {
+
+    public function get_query_select($what, $from, $where = null, $is = null, $order_by = null, $where_array_is_and = true, $asc = null, $how_much = null) {
         $what = $this->filterParameters($what);
         $where = $this->filterParameters($where);
         $order_by = $this->filterParameters($order_by);
@@ -40,21 +38,32 @@ class mysql {
         if (!empty($where)) {
             if (is_array($where) and is_array($is)) {
                 $query .= " WHERE " . $this->get_where_query_part_from_array($where, $is, $where_array_is_and);
-            } else
+            }
+            else
                 $query .= " WHERE " . $where . "='$is'";
         }
 
         if (!empty($order_by))
             $query .= " ORDER BY " . $order_by;
 
- //       echo $query;
+        if (!empty($asc)) {
+            if ($asc == true) {
+                $query .= " ASC";
+            } else {
+                $query .= " DESC";
+            }
+        }
+        
+        if(!empty($how_much))
+            $query .= " LIMIT " . $how_much;
+
+//       echo $query;
 
         return $this->get_query_bulk($query);
     }
-    
+
     public function get_query_bulk($query) {
-        $result = mysql_query($query)
-                or die(mysql_error());
+        $result = mysql_query($query) or die(mysql_error());
 
         $n = 0;
         $template_array = array();
@@ -67,18 +76,17 @@ class mysql {
 
         return $template_array;
     }
-    
+
     public function put_query_from_array($where, $what_is_what_array) {
         $what_is_what_array = $this->filterParameters($what_is_what_array);
         $where = $this->filterParameters($where);
         $query = "INSERT INTO " . $this->etuliite . $where . " (" . implode(", ", array_keys($what_is_what_array)) . ") VALUES ('" . implode("', '", array_values($what_is_what_array)) . "')";
-        
- //       echo $query;
-        
-        mysql_query($query)
-                or die(mysql_error());
+
+        //       echo $query;
+
+        mysql_query($query) or die(mysql_error());
     }
-    
+
     public function update_db($array, $table, $where = null, $is = null) {
         $array = $this->filterParameters($array);
         $table = $this->filterParameters($table);
@@ -100,10 +108,9 @@ class mysql {
 
 //        echo $query;
 
-        mysql_query($query)
-                or die(mysql_error());
+        mysql_query($query) or die(mysql_error());
     }
-    
+
     private function filterParameters($array) {
         /*
          * Created by: Stefan van Beusekom
@@ -137,6 +144,7 @@ class mysql {
         // Return the filtered result
         return $array;
     }
+
 }
 
 ?>
