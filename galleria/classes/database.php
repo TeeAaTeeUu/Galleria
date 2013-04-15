@@ -43,7 +43,7 @@ class database {
         $this->mysql->put_query_from_array("infos", $temp_array);
     }
 
-    public function get_images_names_from_db($how_much) {
+    public function get_images_names_from_db($how_much = null) {
         return $this->mysql->get_query_select("name, id", "images", null, null, "RAND()", false, null, $how_much);
     }
     
@@ -55,7 +55,8 @@ class database {
     }
     
    public function  get_image_id_from_db($name) {
-        return $this->mysql->get_query_select("id", "images", "name", $name)[0]["id"];
+        $temp = $this->mysql->get_query_select("id", "images", "name", $name);
+        return $temp[0]["id"];
     }
 
     public function get_comments_from_db($image_id) {

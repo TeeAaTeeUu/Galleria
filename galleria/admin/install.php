@@ -49,7 +49,7 @@ foreach ($tables as $value) {
         $query .= "$key VARCHAR($value)";
     }
 
-    $query = ", `aika` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,";
+    $query .= ", aika timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
     $query .= " )";
 
     echo $query;
