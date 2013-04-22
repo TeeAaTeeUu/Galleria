@@ -84,7 +84,7 @@ function __autoload($class_name) {
         <div id="body">
             <div id="header" class="cf">
                 <h1>3-column CSS layout, Step 6</h1>
-                <p>See <a href="/archive/201012/how_to_create_a_3-column_layout_with_css/">How to create a 3-column layout with CSS</a> for info on what this is.</p>
+                <p>See <a href="http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/">How to create a 3-column layout with CSS</a> for info on what this is.</p>
                 <p>This is <code>&lt;div id="header"&gt;</code>.</p>
             </div>
             <div id="main" class="cf">
@@ -97,7 +97,7 @@ function __autoload($class_name) {
 
                     $db = new database();
 
-                    $images = $db->get_images_names_from_db(12);
+                    $images = $db->get_images_names_and_ids_from_db(12);
                     
 
                     for ($index = 0; $index < count($images) / 2; $index++) {
@@ -108,15 +108,6 @@ function __autoload($class_name) {
                 <div id="content-2">
                     <div id="content-2-1">
                         <?php
-                        if (isset($_GET["image_id"])) {
-                            $kuva = $db->get_image_name_from_db($_GET["image_id"]);
-                        } else {
-                            $kuva = "apy.jpg";
-                        }
-                        $pic = $db->get_image_id_from_db($kuva);
-
-                        echo '<img src="big_images/' . $kuva . '" />';
-
                         include_once 'aliosiot/kuvandata.php';
                         ?>
 

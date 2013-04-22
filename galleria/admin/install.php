@@ -24,11 +24,24 @@ $rates = array(
     'rate' => 1,
 );
 
+$users = array(
+    'nick' => 50,
+    'onko_admin' => 1,
+    'pswd_hash' => 1,
+);
+
+$tags = array(
+    'tag' => 50,
+    'image_id' => 1,
+);
+
 $tables = array(
     "images",
     "comments",
     "infos",
-    "rates"
+    "rates",
+    "tags",
+    "users",
 );
 
 $db = new mysql();
@@ -46,7 +59,11 @@ foreach ($tables as $value) {
 
     foreach (${$value} as $key => $value) {
         $query .= ", ";
-        $query .= "$key VARCHAR($value)";
+        if (strpos($key, '_id') !== false) {
+            $query .= "$key INT";
+        }
+        else
+            $query .= "$key VARCHAR($value)";
     }
 
     $query .= ", aika timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
@@ -54,7 +71,6 @@ foreach ($tables as $value) {
 
     echo $query;
 
-    mysql_query($query)
-            or die(mysql_error());
+    mysql_query($query) or die(mysql_error());
 }
 ?>

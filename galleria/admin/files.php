@@ -24,6 +24,7 @@ class files {
 
     public function directoryToArray() {
         $directory = scandir(dirname(getcwd()) .  "/small_images/");
+        var_dump($directory);
         var_dump(dirname(getcwd()) . "/small_images/");
         $temp_directory = array();
 
@@ -57,7 +58,7 @@ class files {
     }
 
     public function get_images_from_db() {
-        $images = $this->db->get_images_names_from_db();
+        $images = $this->db->get_images_names_and_ids_from_db();
 
 //        foreach ($images as $file) {
 //            echo $file . "<br />" . "\n";

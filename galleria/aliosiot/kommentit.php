@@ -14,8 +14,19 @@
         <form method="post">
             <table>
                 <tr>
-                    <td>
+                    <td><?php
+                    if (isset($_GET["tag"]) == false) {
+                    ?>
                         <label for="kommentti">Kommenttisi merkistä</label><br />
+                        <?php
+                    } else {
+                        ?>
+                        
+                        <label for="kommentti">Kommenttisi tagista</label><br />
+                        
+                        <?php
+                    };
+                        ?>
                         <textarea name="kommentti"></textarea>
                     </td>
                     <td>
@@ -31,7 +42,19 @@
                 </tr>
                 <tr>
                     <td>
+                        <?php
+                        if (isset($_GET["tag"]) == false) {
+                        ?>
                         <input type="hidden" name="image_id" value="<?php echo $pic ?>" />
+                        <?php
+                        } else {
+                        ?>
+                        
+                        <input type="hidden" name="tag_kommentti" value="1" />
+                        
+                        <?php
+                        };
+                        ?>
                         <input type="submit" name="kommentointia" value="lähetä" />
                     </td>
                     <td>

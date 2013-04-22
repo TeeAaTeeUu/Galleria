@@ -25,19 +25,20 @@ class mysql {
             return false;
     }
 
-    public function get_query_select($what, $from, $where = null, $is = null, $order_by = null, $where_array_is_and = true, $asc = null, $how_much = null) {
+    public function get_query_select($what, $from, $where = null, $is = null, $order_by = null, $where_array_is_and_not_or = true, $asc = null, $how_much = null) {
         $what = $this->filterParameters($what);
         $where = $this->filterParameters($where);
         $order_by = $this->filterParameters($order_by);
         $from = $this->filterParameters($from);
         $is = $this->filterParameters($is);
 
-
         $query = "SELECT " . $what . " FROM " . $this->etuliite . $from;
 
         if (!empty($where)) {
             if (is_array($where) and is_array($is)) {
-                $query .= " WHERE " . $this->get_where_query_part_from_array($where, $is, $where_array_is_and);
+                $query .= " WHERE " . $this->get_where_query_part_from_array($where, $is, $where_array_is_and_not_or, true);
+            } elseif (is_array($is)) {
+                $query .= " WHERE " . $this->get_where_query_part_from_array($where, $is, $where_array_is_and_not_or, false);
             }
             else
                 $query .= " WHERE " . $where . "='$is'";
@@ -53,13 +54,43 @@ class mysql {
                 $query .= " DESC";
             }
         }
-        
-        if(!empty($how_much))
+
+        if (!empty($how_much))
             $query .= " LIMIT " . $how_much;
 
-//       echo $query;
+//        echo $query;
 
         return $this->get_query_bulk($query);
+    }
+
+    public function get_where_query_part_from_array($where_array, $is_array, $where_array_is_and_not_or, $where_is_array = true) {
+        $temp_query = "";
+        $first = true;
+        if ($where_is_array) {
+            for ($i = 0; $i <= count($where_array) - 1; $i++) {
+                if (!$first) {
+                    if ($where_array_is_and_not_or)
+                        $temp_query .= " AND ";
+                    else
+                        $temp_query .= " OR ";
+                }
+
+                $temp_query .= "$where_array[$i]='$is_array[$i]'";
+
+                $first = false;
+            }
+        } else {
+            $temp_query .= $where_array . " IN (";
+            for ($i = 0; $i <= count($is_array) - 1; $i++) {
+                if (!$first) {
+                    $temp_query .= ", ";
+                }
+                $temp_query .= "'" . $is_array[$i] . "'";
+                $first = false;
+            }
+            $temp_query .= ")";
+        }
+        return $temp_query;
     }
 
     public function get_query_bulk($query) {
