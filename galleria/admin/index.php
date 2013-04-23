@@ -26,7 +26,9 @@ function better_crypt($input, $rounds = 7) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>3-column CSS layout, Step 6</title>
         </meta>
-    <body><?php
+    <body>
+    <a href="../">pääsivulle</a>
+        <hr /><?php
         if (isset($_POST["admin"])) {
             $password = $_POST["password"];
             $username = $_POST["user"];
@@ -57,17 +59,19 @@ function better_crypt($input, $rounds = 7) {
                     }
                     if (isset($_POST["datas"])) {
                         if ($_POST["datas"] == 1) {
-                            
-                            SplitSQL($file, $db, $delimiter = ';');
+                            echo "<h2>Lisättävät testidatat</h2>";
+//                            SplitSQL($file, $db, $delimiter = ';');
                         }
                     }
+                    echo "<hr />";
                 }
             }
         }
         ?>
         <form method="post">
             <input type="checkbox" name="tables" value="1">Haluat alustaa taulukot<br>
-            <input type="checkbox" name="images" value="1">Haluat asettaa kuvat
+            <input type="checkbox" name="images" value="1">Haluat asettaa kuvat<br />
+            <input type="checkbox" name="datas" value="1">Haluat asettaa testidataa<br>
             <hr />
             <label for="user">Käyttäjänimi</label><br />
             <input name="user" type="text" /><br />
