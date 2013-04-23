@@ -7,11 +7,24 @@ class database {
     public function __construct() {
         $this->mysql = new mysql();
     }
+    
+    public function get_mysql() {
+        return $this->mysql;    
+    }
 
     public function put_images_to_db($images_array) {
         foreach ($images_array as $file) {
             $this->mysql->put_query_from_array("images", array("name" => $file));
         }
+    }
+    
+    public function exists_user($username) {
+        return $this->mysql->exists_in_db("users", "nick", $username);
+    }
+    
+    public function get_user_hash($username) {
+        $temp = $this->mysql->get_query_select("pswd_hash", "users", "nick", $username);
+        return $temp[0]["pswd_hash"];
     }
 
     public function put_comment_to_db($comment_array) {

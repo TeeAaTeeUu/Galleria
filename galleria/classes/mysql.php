@@ -3,13 +3,21 @@
 class mysql {
 
     private $local_db;
-    public $dbname = "galleria";
-    private $dbuser = "root";
-    private $dbpw = "bitnami";
-    private $dbhost = "localhost";
-    public $etuliite = "galleria_";
+    public $dbname;
+    private $dbuser;
+    private $dbpw;
+    private $dbhost;
+    public $etuliite;
 
     public function __construct() {
+        include 'settings.php';
+        
+        $this->dbhost = get_dbhost();
+        $this->dbuser = get_dbuser();
+        $this->dbpw = get_dbpw();
+        $this->dbname = get_dbname();
+        $this->etuliite = get_etuliite();
+        
         $this->local_db = mysql_connect($this->dbhost, $this->dbuser, $this->dbpw) or die(mysql_error());
         mysql_select_db($this->dbname) or die(mysql_error());
     }
@@ -116,6 +124,10 @@ class mysql {
         //       echo $query;
 
         mysql_query($query) or die(mysql_error());
+    }
+    
+    public function put_query_bulk($query) {
+        return mysql_query($query) or die(mysql_error());
     }
 
     public function update_db($array, $table, $where = null, $is = null) {

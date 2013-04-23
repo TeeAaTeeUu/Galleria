@@ -83,6 +83,7 @@ function __autoload($class_name) {
     <body>
         <div id="body">
             <div id="header" class="cf">
+                <?PHP if(defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) { echo "CRYPT_BLOWFISH is enabled!"; } ?>
                 <h1>3-column CSS layout, Step 6</h1>
                 <p>See <a href="http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/">How to create a 3-column layout with CSS</a> for info on what this is.</p>
                 <p>This is <code>&lt;div id="header"&gt;</code>.</p>
