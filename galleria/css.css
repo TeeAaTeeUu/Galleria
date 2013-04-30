@@ -1,0 +1,51 @@
+html,
+body {
+    margin:0;
+    padding:0;
+    color:#000;
+    background:#fff;
+}
+/* http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/ */
+#body {
+    width:1000px;
+    margin:0 auto;
+    background:#ddd;
+}
+#header {
+    padding:10px;
+    background:#fdd;
+    text-align: center;
+}
+#content-1 {
+    float:left;
+    width:200px;
+    background:#bfb;
+}
+#content-2 {
+    float:right;
+    width:800px;
+}
+#content-2-1 {
+    float:left;
+    width:600px;
+    background:#ddf;
+}
+#content-2-2 {
+    float:right;
+    width:200px;
+    background:#dff;
+}
+img {
+    border: 0;
+    padding: 0px;
+    margin: 0px;
+}
+
+#footer {
+    padding:10px;
+    background:#ff9;
+    text-align: center;
+}
+li.tags {
+    display:inline;
+}

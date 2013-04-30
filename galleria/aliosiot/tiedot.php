@@ -8,17 +8,18 @@ $rate = $db->get_rates_sum_from_db($pic);
 <table>
     <tr>
         <td>Merkin nimi</td>
-        <td><?php echo $info["nimi"] ?></td>
+        <td>: <?php echo $info["nimi"] ?></td>
     </tr>
     <tr>
         <td>Kenen merkki</td>
-        <td><?php echo $info["kenen"] ?></td>
+        <td>: <?php echo $info["kenen"] ?></td>
     </tr>
     <tr>
         <td>tähdet</td>
-        <td><?php echo $rate ?></td>
+        <td>: <?php echo $rate ?></td>
     </tr>
 </table>
+<hr />
 <p>
 <form method="post">
     <label for="rate">Kuinka hyvä merkki on?</label><br />

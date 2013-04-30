@@ -15,7 +15,7 @@ $tags = $db->get_tags_from_db($pic);
                 }
                 else
                     echo " , ";
-                echo '<a href="index.php?tag=' . $tag . '">' . $tag . '</a>';
+                echo '<a href="?tag=' . $tag . '">' . $tag . '</a>';
             }
             ?></p>
     </div>

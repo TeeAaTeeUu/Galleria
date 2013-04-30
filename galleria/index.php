@@ -12,6 +12,7 @@ function __autoload($class_name) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>3-column CSS layout, Step 6</title>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" href="css.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
         <script>
@@ -20,53 +21,7 @@ function __autoload($class_name) {
             });
         </script>
         <style type="text/css" media="screen, print, projection">
-            html,
-            body {
-                margin:0;
-                padding:0;
-                color:#000;
-                background:#fff;
-            }
-            /* http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/ */
-            #body {
-                width:1000px;
-                margin:0 auto;
-                background:#ddd;
-            }
-            #header {
-                padding:10px;
-                background:#fdd;
-                text-align: center;
-            }
-            #content-1 {
-                float:left;
-                width:200px;
-                background:#bfb;
-            }
-            #content-2 {
-                float:right;
-                width:800px;
-            }
-            #content-2-1 {
-                float:left;
-                width:600px;
-                background:#ddf;
-            }
-            #content-2-2 {
-                float:right;
-                width:200px;
-                background:#dff;
-            }
-            img {
-                border: 0;
-                padding: 0px;
-                margin: 0px;
-            }
 
-            #footer {
-                padding:10px;
-                background:#ff9;
-            }
             /* Easy clearing of floats (see http://positioniseverything.net/easyclearing.html) */
             .cf:after {
                 display:block;
@@ -83,10 +38,8 @@ function __autoload($class_name) {
     <body>
         <div id="body">
             <div id="header" class="cf">
-                <?PHP if(defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) { echo "CRYPT_BLOWFISH is enabled!"; } ?>
-                <h1>3-column CSS layout, Step 6</h1>
+                <h1>Merkki-galleria</h1>
                 <p>See <a href="http://www.456bereastreet.com/archive/201012/how_to_create_a_3-column_layout_with_css/">How to create a 3-column layout with CSS</a> for info on what this is.</p>
-                <p>This is <code>&lt;div id="header"&gt;</code>.</p>
             </div>
             <div id="main" class="cf">
                 <div id="content-1">
@@ -99,7 +52,7 @@ function __autoload($class_name) {
                     $db = new database();
 
                     $images = $db->get_images_names_and_ids_from_db(12);
-                    
+
 
                     for ($index = 0; $index < count($images) / 2; $index++) {
                         echo '<div class="kuva"><a ' . "\n" . 'href="?image_id=' . $images[$index]["id"] . '"><img src="small_images/' . $images[$index]["name"] . '" /></a></div>';
@@ -116,14 +69,16 @@ function __autoload($class_name) {
                     <div id="content-2-2">
                         <?php
                         for ($index = count($images) / 2; $index < count($images); $index++) {
-                        echo '<div class="kuva"><a ' . "\n" . 'href="?image_id=' . $images[$index]["id"] . '"><img src="small_images/' . $images[$index]["name"] . '" /></a></div>';
+                            echo '<div class="kuva"><a ' . "\n" . 'href="?image_id=' . $images[$index]["id"] . '"><img src="small_images/' . $images[$index]["name"] . '" /></a></div>';
                         }
                         ?>
                     </div>
                 </div>
             </div>
             <div id="footer" class="cf">
-                <p>This is <code>&lt;div id="footer"&gt;</code>.</p>
+                <?php
+                include 'aliosiot/footer.php';
+                ?>
             </div>
         </div>
     </body>

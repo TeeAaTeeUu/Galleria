@@ -11,13 +11,13 @@ class mysql {
 
     public function __construct() {
         include 'settings.php';
-        
+
         $this->dbhost = get_dbhost();
         $this->dbuser = get_dbuser();
         $this->dbpw = get_dbpw();
         $this->dbname = get_dbname();
         $this->etuliite = get_etuliite();
-        
+
         $this->local_db = mysql_connect($this->dbhost, $this->dbuser, $this->dbpw) or die(mysql_error());
         mysql_select_db($this->dbname) or die(mysql_error());
     }
@@ -31,6 +31,11 @@ class mysql {
             return true;
         else
             return false;
+    }
+
+    public function table_exists_in_db($table) {
+        $table = $this->etuliite . $this->filterParameters($table);
+        return $this->get_query_bulk("SELECT * FROM $table", true);
     }
 
     public function get_query_select($what, $from, $where = null, $is = null, $order_by = null, $where_array_is_and_not_or = true, $asc = null, $how_much = null) {
@@ -101,17 +106,23 @@ class mysql {
         return $temp_query;
     }
 
-    public function get_query_bulk($query) {
-        $result = mysql_query($query) or die(mysql_error());
-
+    public function get_query_bulk($query, $test = false) {      
+        if ($test) {
+            $result = @mysql_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            $result = mysql_query($query) or die(mysql_error());
+        }
         $n = 0;
         $template_array = array();
         while ($row = mysql_fetch_assoc($result)) {
             $template_array[$n] = $row;
             ++$n;
         };
-
-//        var_dump($template_array);
 
         return $template_array;
     }
@@ -126,6 +137,17 @@ class mysql {
         mysql_query($query) or die(mysql_error());
     }
     
+    public function delete_query_from_array($where, $what, $is) {
+        $what = $this->filterParameters($what);
+        $is = $this->filterParameters($is);
+        $where = $this->filterParameters($where);
+        $query = "DELETE FROM " . $this->etuliite . $where . " WHERE " . $what . "=" . $is . ";";
+
+        //       echo $query;
+
+        mysql_query($query) or die(mysql_error());
+    }
+
     public function put_query_bulk($query) {
         return mysql_query($query) or die(mysql_error());
     }

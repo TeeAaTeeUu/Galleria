@@ -28,104 +28,123 @@ function better_crypt($input, $rounds = 7) {
         </meta>
     <body>
     <a href="../">pääsivulle</a>
-        <hr /><?php
-        if (isset($_POST["admin"])) {
-            $password = $_POST["password"];
-            $username = $_POST["user"];
+    <hr /><?php
+    if (isset($_POST["admin"])) {
+        $password = $_POST["password"];
+        $username = $_POST["user"];
 
-            include '../classes/database.php';
-            $db = new database();
+        include '../classes/database.php';
+        $db = new database();
 
+        if ($db->table_exists_in_db("users")) {
             if ($db->exists_user($username)) {
-                $password_hash = $db->get_user_hash($username);
+                kayttaja_loytyy($password, $username, $db);
+            }
+        } else {
+            if (isset($_POST["valinta"]) == false) {
+                echo "<table><tr><td><p>Luodaanko antamasi mukaiset tunnukset?</p>" . "\n";
+                echo "<p><i>Huom! (samalla luodaan kaikki taulut)</i></p></td>" . "\n";
 
-                if (crypt($password, $password_hash) == $password_hash) {
+                echo '<td><form method="post"><input type="hidden" name="user" value="' . $_POST["user"] . '" />';
+                echo '<input type="hidden" name="password" value="' . $_POST["password"] . '" />';
+                echo '<input type="hidden" name="admin" value="valinta" />';
+                echo '<input type="submit" name="valinta" value="kyllä" />';
+                echo '<input type="submit" name="valinta" value="ei" /></form></td></tr></table>';
 
-                    if (isset($_POST["tables"])) {
-                        if ($_POST["tables"] == 1) {
+                echo "<hr />" . "\n";
+            } elseif ($_POST["valinta"] == "kyllä") {
+                include_once 'install.php';
+                create_tables($db, "create");
 
-                            include 'install.php';
-                            create_tables($db);
-                        }
-                    }
-                    if (isset($_POST["images"])) {
-                        if ($_POST["images"] == 1) {
+                $password_hash = better_crypt($_POST["password"]);
 
-                            include 'files.php';
-                            $files = new files($db);
+                $db->put_user_to_db($username, $password_hash, 1);
 
-                            $files->put_new_images_to_db();
-                        }
-                    }
-                    if (isset($_POST["datas"])) {
-                        if ($_POST["datas"] == 1) {
-                            echo "<h2>Lisättävät testidatat</h2>";
-//                            SplitSQL($file, $db, $delimiter = ';');
-                        }
-                    }
-                    echo "<hr />";
-                }
+                echo "<p>Onnistui!</p>" . "\n";
             }
         }
-        ?>
-        <form method="post">
-            <input type="checkbox" name="tables" value="1">Haluat alustaa taulukot<br>
-            <input type="checkbox" name="images" value="1">Haluat asettaa kuvat<br />
-            <input type="checkbox" name="datas" value="1">Haluat asettaa testidataa<br>
-            <hr />
-            <label for="user">Käyttäjänimi</label><br />
-            <input name="user" type="text" /><br />
-            <label for="password">Salasana</label><br />
-            <input name="password" type="password" /><br />
-            <input type="submit" name="admin" value="lähetä" />
-        </form>
-    </body>
+    }
+    ?>
+    <form method="post">
+        <input type="checkbox" name="drop" value="1">Haluat poistaa taulukot<br />
+        <input type="checkbox" name="tables" value="1">Haluat luoda taulukot<br />
+        <input type="checkbox" name="images" value="1">Haluat asettaa kuvat<br />
+        <input type="checkbox" name="data" value="1">Haluat asettaa testidataa<br />
+        <input type="checkbox" name="comment" value="1">Haluat poistaa kommentteja<br />
+        <input type="checkbox" name="tieto" value="1">Haluat poistaa tietoja<br />
+        <hr />
+        <label for="user">Käyttäjänimi</label><br />
+        <input name="user" type="text" value="<?php if (isset($_POST["user"])) echo $_POST["user"] ?>" /><br />
+        <label for="password">Salasana</label><br />
+        <input name="password" type="password" value="<?php if (isset($_POST["password"])) echo $_POST["password"] ?>" /><br />
+        <input type="submit" name="admin" value="lähetä" />
+    </form>
+</body>
 </html>
 
 <?php
 
-// http://stackoverflow.com/questions/1883079/best-practice-import-mysql-file-in-php-split-queries/2011454#2011454
-//  answered Jan 6 '10 at 7:19 Alix Axel
+function kayttaja_loytyy($password, $username, $db) {
+    $password_hash = $db->get_user_hash($username);
 
-function SplitSQL($file, $db, $delimiter = ';') {
-    set_time_limit(0);
-    
-    $mysql = $db->get_mysql();
+    if (crypt($password, $password_hash) == $password_hash) {
+        if ($db->user_is_admin($username) == true) {
 
-    if (is_file($file) === true) {
-        $file = fopen($file, 'r');
+            if (isset($_POST["drop"])) {
+                if ($_POST["drop"] == 1) {
 
-        if (is_resource($file) === true) {
-            $query = array();
-
-            while (feof($file) === false) {
-                $query[] = fgets($file);
-
-                if (preg_match('~' . preg_quote($delimiter, '~') . '\s*$~iS', end($query)) === 1) {
-                    $query = trim(implode('', $query));
-
-                    if ($mysql->put_query_bulk($query) === false) {
-                        echo '<h3>ERROR: ' . $query . '</h3>' . "\n";
-                    } else {
-                        echo '<h3>SUCCESS: ' . $query . '</h3>' . "\n";
-                    }
-
-                    while (ob_get_level() > 0) {
-                        ob_end_flush();
-                    }
-
-                    flush();
-                }
-
-                if (is_string($query) === true) {
-                    $query = array();
+                    include_once 'install.php';
+                    create_tables($db, "drop");
                 }
             }
+            if (isset($_POST["tables"])) {
+                if ($_POST["tables"] == 1) {
 
-            return fclose($file);
+                    include_once 'install.php';
+                    create_tables($db, "create");
+                }
+            }
+            if (isset($_POST["images"])) {
+                if ($_POST["images"] == 1) {
+
+                    include 'files.php';
+                    $files = new files($db);
+
+                    $files->put_new_images_to_db();
+                }
+            }
+            if (isset($_POST["data"])) {
+                if ($_POST["data"] == 1) {
+                    include_once "test.php";
+                    put_test_data($db);
+                }
+            }
+            if (isset($_POST["comment"])) {
+                if ($_POST["comment"] == 1) {
+                    include_once 'comments.php';
+                    listaa_kommentit($db);
+                }
+            }
+            if (isset($_POST["kommentti_poisto"])) {
+                if ($_POST["kommentti_poisto"] == "poista") {
+                    include_once 'comments.php';
+                    poista_kommentit($db);
+                }
+            }
+            if (isset($_POST["tieto"])) {
+                if ($_POST["tieto"] == 1) {
+                    include_once 'infos.php';
+                    listaa_tiedot($db);
+                }
+            }
+            if (isset($_POST["tieto_poisto"])) {
+                if ($_POST["tieto_poisto"] == "poista") {
+                    include_once 'infos.php';
+                    poista_tiedot($db);
+                }
+            }
+            echo "<hr />";
         }
     }
-
-    return false;
 }
 ?>

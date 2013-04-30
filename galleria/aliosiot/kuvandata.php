@@ -11,6 +11,7 @@ $post = array(
     "pisteita",
     "nick",
     "tags",
+    "tag_name",
     "tageja",
     "tag_kommentti"
 );
@@ -24,9 +25,11 @@ if (empty($_POST) == false) {
     }
 
     if (empty($post["kommentointia"]) == false) {
-        if (empty($post["tag_kommentti"]) == true)
-            if ($post["tag_kommentti"] != 1)
-                $db->put_comment_to_db($post);
+        if (empty($post["tag_kommentti"]) == true) {
+                $db->put_image_comment_to_db($post);
+        } else {
+            $db->put_tag_comment_to_db($post);
+        }
     }
 };
 
